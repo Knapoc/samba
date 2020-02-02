@@ -105,8 +105,7 @@ EOF
     ACCOUNT_PASSWORD=$(echo "$I_ACCOUNT" | sed 's/^[^=]*=//g')
 
     echo ">> ACCOUNT: adding account: $ACCOUNT_NAME"
-    adduser -H -s /bin/false "$ACCOUNT_NAME"
-    echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | passwd "$ACCOUNT_NAME"
+    echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | adduser -H -s /bin/false "$ACCOUNT_NAME"
     echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | smbpasswd -a "$ACCOUNT_NAME"
     smbpasswd -e "$ACCOUNT_NAME"
 
