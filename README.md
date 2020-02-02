@@ -1,10 +1,10 @@
-# credit to https://github.com/MarvAmBass for the initial project.
-
-### samba
+# samba
 samba - freshly complied from official stable releases on debian:stretch
 
 # Source Code
 Check the following link for a new version: https://download.samba.org/pub/samba/stable/
+
+### credit to https://github.com/MarvAmBass for the initial project.
 
 ## Environment variables and defaults
 
