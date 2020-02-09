@@ -19,11 +19,11 @@ The samba server can be configured with the following environmental variables.
  - multiple variables/accounts possible
  - adds a new user account with the given username and the env value as password
  - optional UID support
- - Examples:
-`-e "ACCOUNT_alice=abcdefg"`
-`-e "ACCOUNT_bob_1009=123456"`
+ - Examples:  
+`-e "ACCOUNT_alice=abcdefg"`  
+`-e "ACCOUNT_bob_1009=123456"`  
 
-to restrict access of volumes you can add the following to your samba volume config:  
+To restrict access of volumes you can add the following to your samba volume config:  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`valid users = alice; invalid users = bob;`
 
 `-e "GROUP_distinctvalue_gid=groupname"`
@@ -31,18 +31,18 @@ to restrict access of volumes you can add the following to your samba volume con
  - multiple variables/groups possible
  - adds a new group with the env value as group name
  - optional GID support
- - Examples:
-`-e "GROUP_a=samba"` 
-`-e "GROUP_b_1010=filegroup"`
+ - Examples:  
+`-e "GROUP_a=samba"`  
+`-e "GROUP_b_1010=filegroup"`  
 
 `-e "U2G_user_distinctvalue=group"`
  - used to assign users to groups (optional)
  - multiple variables possible
  - adds the given user to a group, which is defined in the env value
- - Examples:
- `-e "U2G_alice_a=samba`
- `-e "U2G_alice_b=filegroup`
- `-e "U2G_bob_a=samba`
+ - Examples:  
+ `-e "U2G_alice_a=samba`  
+ `-e "U2G_alice_b=filegroup`  
+ `-e "U2G_bob_a=samba`  
 
 **Main server configuration**  
 Workgroup: `-e "SAMBA_CONF_WORKGROUP=name"`  
