@@ -12,7 +12,7 @@ Check the following link for a new version: https://download.samba.org/pub/samba
 The samba server can be configured with the following environmental variables.
 
 
-**Accounts & Groups**
+**Accounts & Groups**  
 `-e "ACCOUNT_username_uid=password"`
  - used for account creation
  - multiple variables/accounts possible
