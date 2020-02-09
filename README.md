@@ -13,6 +13,7 @@ The samba server can be configured with the following environmental variables.
 
 
 **Accounts & Groups**  
+
 `-e "ACCOUNT_username_uid=password"`
  - used for account creation
  - multiple variables/accounts possible
@@ -22,7 +23,8 @@ The samba server can be configured with the following environmental variables.
 `-e "ACCOUNT_alice=abcdefg"`
 `-e "ACCOUNT_bob_1009=123456"`
 
-to restrict access of volumes you can add the following to your samba volume config: `valid users = alice; invalid users = bob;`
+to restrict access of volumes you can add the following to your samba volume config:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`valid users = alice; invalid users = bob;`
 
 `-e "GROUP_distinctvalue_gid=groupname"`
  - used for group creation (optional)
@@ -42,33 +44,33 @@ to restrict access of volumes you can add the following to your samba volume con
  `-e "U2G_alice_b=filegroup`
  `-e "U2G_bob_a=samba`
 
-**Main server configuration**
-Workgroup: `-e "SAMBA_CONF_WORKGROUP=name"`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *WORKGROUP*
-Server string: `-e "SAMBA_CONF_SERVER_STRING=file server"`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *file server*
-Map to guest: `-e SAMBA_CONF_MAP_TO_GUEST=Bad User`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *Bad User*
-Password sync: `-e "SAMBA_CONF_ENABLE_PASSWORD_SYNC"`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled
-NTLM auth: `-e "SAMBA_CONF_ENABLE_NTLM_AUTH"`
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled
+**Main server configuration**  
+Workgroup: `-e "SAMBA_CONF_WORKGROUP=name"`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *WORKGROUP*  
+Server string: `-e "SAMBA_CONF_SERVER_STRING=file server"`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *file server*  
+Map to guest: `-e SAMBA_CONF_MAP_TO_GUEST=Bad User`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *Bad User*  
+Password sync: `-e "SAMBA_CONF_ENABLE_PASSWORD_SYNC"`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled  
+NTLM auth: `-e "SAMBA_CONF_ENABLE_NTLM_AUTH"`  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled  
 
-**Additional global configuration**
-`SAMBA_GLOBAL_CONFIG_myconfigname`
-* adds additional global configuration
-* multiple variables/confgurations possible by adding unique configname to SAMBA_GLOBAL_CONFIG_
-* Examples
-`-e "SAMBA_GLOBAL_CONFIG_var1= min protocol = SMB2; fruit:metadata = stream"`
-`-e "SAMBA_GLOBAL_CONFIG_var2= fruit:nfs_aces = no"`
+**Additional global configuration**  
+`SAMBA_GLOBAL_CONFIG_myconfigname`  
+* adds additional global configuration  
+* multiple variables/confgurations possible by adding unique configname to SAMBA_GLOBAL_CONFIG_  
+* Examples  
+`-e "SAMBA_GLOBAL_CONFIG_var1= min protocol = SMB2; fruit:metadata = stream"`  
+`-e "SAMBA_GLOBAL_CONFIG_var2= fruit:nfs_aces = no"`  
 
-**Volume configuration**
-`SAMBA_VOLUME_CONFIG_myconfigname`
-* adds a new samba volume configuration
-* multiple variables/confgurations possible by adding unique configname to SAMBA_VOLUME_CONFIG_
- * Examples
-`-e "SAMBA_VOLUME_CONFIG_volumea=[My Share]; path=/shares/myshare; guest ok = no; read only = no; browseable = yes"`
-`-e "SAMBA_VOLUME_CONFIG_volumeb=[Guest Share]; path=/shares/guests; guest ok = yes; read only = no; browseable = yes"`
+**Volume configuration**  
+`SAMBA_VOLUME_CONFIG_myconfigname`  
+* adds a new samba volume configuration  
+* multiple variables/confgurations possible by adding unique configname to SAMBA_VOLUME_CONFIG_  
+ * Examples  
+`-e "SAMBA_VOLUME_CONFIG_volumea=[My Share]; path=/shares/myshare; guest ok = no; read only = no; browseable = yes"`  
+`-e "SAMBA_VOLUME_CONFIG_volumeb=[Guest Share]; path=/shares/guests; guest ok = yes; read only = no; browseable = yes"`  
 
 # Apple TimeMachine
 
