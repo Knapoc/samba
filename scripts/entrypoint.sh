@@ -101,16 +101,65 @@ EOF
   # USER ACCOUNTS
   ##
   echo "$(env | grep '^ACCOUNT_')" | while IFS= read -r I_ACCOUNT ; do
-    ACCOUNT_NAME=$(echo "$I_ACCOUNT" | cut -d'=' -f1 | sed 's/ACCOUNT_//g' | tr '[:upper:]' '[:lower:]')
+    ACCOUNT_NAME=$(echo "$I_ACCOUNT" | cut -d'=' -f1 | sed 's/ACCOUNT_//g' | sed -E 's/\_(.*)//g' | tr '[:upper:]' '[:lower:]')
     ACCOUNT_PASSWORD=$(echo "$I_ACCOUNT" | sed 's/^[^=]*=//g')
+    ACCOUNT_UID=$(echo "$I_ACCOUNT" | cut -d'=' -f1 | sed -E 's/ACCOUNT_[^_]*_?//g')
 
     echo ">> ACCOUNT: adding account: $ACCOUNT_NAME"
-    echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | adduser -H -s /bin/false "$ACCOUNT_NAME"
+    if [ -z "$ACCOUNT_UID" ]
+    then
+      echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | adduser -H -s /bin/false "$ACCOUNT_NAME"
+    else
+      echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | adduser -H -s /bin/false --uid $ACCOUNT_UID "$ACCOUNT_NAME"
+    fi
+      
     echo -e "$ACCOUNT_PASSWORD\n$ACCOUNT_PASSWORD" | smbpasswd -a "$ACCOUNT_NAME"
     smbpasswd -e "$ACCOUNT_NAME"
 
     unset $(echo "$I_ACCOUNT" | cut -d'=' -f1)
   done
+  
+  ##
+  # GROUPS e.g. GROUP_randomdistinctvalue_GID=groupname
+  ##
+  if env | grep -q '^GROUP_'
+  then
+    echo "$(env | grep '^GROUP_')" | while IFS= read -r I_GROUP ; do
+      GROUP_NAME=$(echo "$I_GROUP" | sed 's/^[^=]*=//g')
+      GROUP_GID=$(echo "$I_GROUP" | cut -d'=' -f1 | sed -E 's/GROUP_[^_]*_?//g')
+      
+      echo ">> GROUP: adding group: $GROUP_NAME"
+      if [ -z "$GROUP_GID" ]
+      then
+        addgroup "$GROUP_NAME"
+      else
+        addgroup --gid $GROUP_GID "$GROUP_NAME"
+      fi
+      
+      unset $(echo "$I_GROUP" | cut -d'=' -f1)
+    done
+  else
+    echo 'No groups added'
+  fi
+  
+  ##
+  # USER TO GROUPS e.g. U2G_user_a=group
+  ##
+  if env | grep -q '^U2G_'
+  then
+    echo "$(env | grep '^U2G_')" | while IFS= read -r I_U2G ; do
+      ACCOUNT_NAME=$(echo "$I_U2G" | cut -d'=' -f1 | sed 's/U2G_//g' | sed -E 's/\_(.*)//g' | tr '[:upper:]' '[:lower:]')
+      GROUP_NAME=$(echo "$I_U2G" | sed 's/^[^=]*=//g')
+      
+      echo ">> Adding $ACCOUNT_NAME to group $GROUP_NAME"
+      
+      adduser "$ACCOUNT_NAME" "$GROUP_NAME"
+      
+      unset $(echo "$I_U2G" | cut -d'=' -f1)
+    done
+  else
+    echo 'No users added to additional groups'
+  fi 
 
   ##
   # Samba Volume Config ENVs

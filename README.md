@@ -1,53 +1,74 @@
+
 # samba
-samba - freshly complied from official stable releases on debian:stretch
+Dockerized samba running in Alpine:latest
 
 # Source Code
 Check the following link for a new version: https://download.samba.org/pub/samba/stable/
 
-### credit to https://github.com/MarvAmBass for the initial project.
+**credit to https://github.com/MarvAmBass for the initial project.**
 
 ## Environment variables and defaults
 
-### Samba
+The samba server can be configured with the following environmental variables.
 
-* __ACCOUNT\_username__
-    * multiple variables/accounts possible
-    * adds a new user account with the given username and the env value as password
 
-to restrict access of volumes you can add the following to your samba volume config:
+**Accounts & Groups**
+`-e "ACCOUNT_username_uid=password"`
+ - used for account creation
+ - multiple variables/accounts possible
+ - adds a new user account with the given username and the env value as password
+ - optional UID support
+ - Examples:
+`-e "ACCOUNT_alice=abcdefg"`
+`-e "ACCOUNT_bob_1009=123456"`
 
-    valid users = alice; invalid users = bob;
+to restrict access of volumes you can add the following to your samba volume config: `valid users = alice; invalid users = bob;`
 
-* __SAMBA\_CONF\_WORKGROUP__
-    * default: _WORKGROUP_
+`-e "GROUP_distinctvalue_gid=groupname"`
+ - used for group creation (optional)
+ - multiple variables/groups possible
+ - adds a new group with the env value as group name
+ - optional GID support
+ - Examples:
+`-e "GROUP_a=samba"` 
+`-e "GROUP_b_1010=filegroup"`
 
-* __SAMBA\_CONF\_SERVER\_STRING__
-    * default: _file server_
+`-e "U2G_user_distinctvalue=group"`
+ - used to assign users to groups (optional)
+ - multiple variables possible
+ - adds the given user to a group, which is defined in the env value
+ - Examples:
+ `-e "U2G_alice_a=samba`
+ `-e "U2G_alice_b=filegroup`
+ `-e "U2G_bob_a=samba`
 
-* __SAMBA\_CONF\_MAP_TO_GUEST__
-    * default: _Bad User_
+**Main server configuration**
+Workgroup: `-e "SAMBA_CONF_WORKGROUP=name"`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *WORKGROUP*
+Server string: `-e "SAMBA_CONF_SERVER_STRING=file server"`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *file server*
+Map to guest: `-e SAMBA_CONF_MAP_TO_GUEST=Bad User`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *Bad User*
+Password sync: `-e "SAMBA_CONF_ENABLE_PASSWORD_SYNC"`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled
+NTLM auth: `-e "SAMBA_CONF_ENABLE_NTLM_AUTH"`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default: *not set* - if set password sync is enabled
 
-* __SAMBA\_CONF\_ENABLE\_PASSWORD\_SYNC__
-    * default not set - if set password sync is enabled
+**Additional global configuration**
+`SAMBA_GLOBAL_CONFIG_myconfigname`
+* adds additional global configuration
+* multiple variables/confgurations possible by adding unique configname to SAMBA_GLOBAL_CONFIG_
+* Examples
+`-e "SAMBA_GLOBAL_CONFIG_var1= min protocol = SMB2; fruit:metadata = stream"`
+`-e "SAMBA_GLOBAL_CONFIG_var2= fruit:nfs_aces = no"`
 
-* __SAMBA\_CONF\_ENABLE\_NTLM\_AUTH__
-    * default not set - if set password sync is enabled
-    * _use for compatibility with xp if you have troubles like NTLMv1 passwords NOT PERMITTED for user_
-    * !!! NOTE: NTLMv1 is known to be broken and it's easy to recover the real password from the hash !!!
-
-* __SAMBA\_GLOBAL\_CONFIG\_myconfigname__
-    * adds additional global configuration
-    * multiple variables/confgurations possible by adding unique configname to SAMBA_GLOBAL_CONFIG_
-    * examples
-        * "SAMBA_GLOBAL_CONFIG_var1= min protocol = SMB2; fruit:metadata = stream"
-        * "SAMBA_GLOBAL_CONFIG_var2= fruit:nfs_aces = no"
-
-* __SAMBA\_VOLUME\_CONFIG\_myconfigname__
-    * adds a new samba volume configuration
-    * multiple variables/confgurations possible by adding unique configname to SAMBA_VOLUME_CONFIG_
-    * examples
-        * "[My Share]; path=/shares/myshare; guest ok = no; read only = no; browseable = yes"
-        * "[Guest Share]; path=/shares/guests; guest ok = yes; read only = no; browseable = yes"
+**Volume configuration**
+`SAMBA_VOLUME_CONFIG_myconfigname`
+* adds a new samba volume configuration
+* multiple variables/confgurations possible by adding unique configname to SAMBA_VOLUME_CONFIG_
+ * Examples
+`-e "SAMBA_VOLUME_CONFIG_volumea=[My Share]; path=/shares/myshare; guest ok = no; read only = no; browseable = yes"`
+`-e "SAMBA_VOLUME_CONFIG_volumeb=[Guest Share]; path=/shares/guests; guest ok = yes; read only = no; browseable = yes"`
 
 # Apple TimeMachine
 
