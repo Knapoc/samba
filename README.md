@@ -1,6 +1,9 @@
 
 # samba
-Dockerized samba running in Alpine:latest
+Dockerized samba running in alpine
+
+[![](https://images.microbadger.com/badges/version/knapoc/samba.svg)](https://microbadger.com/images/knapoc/samba "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/knapoc/samba.svg)](https://microbadger.com/images/knapoc/samba "Get your own image badge on microbadger.com")
 
 # Source Code
 Check the following link for a new version: https://download.samba.org/pub/samba/stable/
